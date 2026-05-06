@@ -1,0 +1,18 @@
+steps:
+  - name: 'gcr.io/k8s-skaffold/pack'
+    entrypoint: pack
+    args:
+      - build
+      - asia-south1-docker.pkg.dev/$PROJECT_ID/spring-repo/spring-app
+      - --builder=gcr.io/buildpacks/builder
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - run
+      - deploy
+      - spring-app
+      - --image=asia-south1-docker.pkg.dev/$PROJECT_ID/spring-repo/spring-app
+      - --region=asia-south1
+      - --platform=managed
+      - --allow-unauthenticated
